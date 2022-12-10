@@ -13,57 +13,92 @@ const getNumbersFromString = (text: string): number[] => {
   return [];
 }
 
-const getCharsFromString = (text: string): string[] => {  
-  if(text){
-    return text.replace(/\b[a-zA-Z]\s/g, ' ').trim().split(' ');
-  }
-  return [];
-}
-
-
 const partition = <T>(ary: T[], callback: (e: T) => {}) =>
   ary.reduce((acc:[T[],T[]], e) => {
     acc[callback(e) ? 0 : 1].push(e)
     return acc
   }, [[], []])
 
-const process = (game: string[], rule: string) => {
+const process = (game: string[][], rule: string) => {
   const [move, from, to] = getNumbersFromString(rule);
   for (let p = 0; p < move; p++) {
-    
+      game[to-1].unshift(game[from-1].shift()!);
   }
   return game;
 }
 
+const process9001 = (game: string[][], rule: string) => {
+  const [move, from, to] = getNumbersFromString(rule);
+  const pivot: string[] = [] as string[];
+  for (let p = 0; p < move; p++) {
+      const element = game[from-1].shift()!
+      pivot.push(element);
+  }
+  game[to-1] = pivot.concat(game[to-1]);
+  return game;
+}
+
+
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const inputArray = lines(input);
-  const [game, rawRules] = partition(inputArray, 
+  const [_, rawRules] = partition(inputArray, 
       ((x: string) => inputArray.indexOf("") > inputArray.indexOf(x))
     );
-  const rules = [, ...rawRules];
-  const data: string[][] = [];
-  const length = game[0].length;
 
-    for (let index = 1; index < length; index+4) {
-      data.push([]);
-      let pivot = 0;
-      for (let j = 0; j < game.length; j++) {
-        const element = game[index][j];
-        data[pivot].push(element);
-        pivot++;
-      }
-    }
+    let game = [
+      ['R','W','F','H','T','S'],
+      ['W','Q','D','G','S'],
+      ['W','T','B'],
+      ['J','Z','Q','N','T','W','R','D'],
+      ['Z','T','V','L','G','H','B','F'],
+      ['G','S','B','V','C','T','P','L'],
+      ['P','G','W','T','R','B','Z'],
+      ['R','J','C','T','M','G','N'],
+      ['W','B','G','L']
+    ]
+
+  rawRules.shift();
+  const rules = rawRules;
   for (const rule of rules) {
-    //result = process(result, rule!);
+    game = process(game, rule!);
   }
-  return;
+  let res = ''
+  for (const col of game) {
+    res += col[0];
+  }
+  return res;
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
+  const inputArray = lines(input);
+  const [_, rawRules] = partition(inputArray, 
+      ((x: string) => inputArray.indexOf("") > inputArray.indexOf(x))
+    );
 
-  return;
+    let game = [
+      ['R','W','F','H','T','S'],
+      ['W','Q','D','G','S'],
+      ['W','T','B'],
+      ['J','Z','Q','N','T','W','R','D'],
+      ['Z','T','V','L','G','H','B','F'],
+      ['G','S','B','V','C','T','P','L'],
+      ['P','G','W','T','R','B','Z'],
+      ['R','J','C','T','M','G','N'],
+      ['W','B','G','L']
+    ]
+
+  rawRules.shift();
+  const rules = rawRules;
+  for (const rule of rules) {
+    game = process9001(game, rule!);
+  }
+  let res = ''
+  for (const col of game) {
+    res += col[0];
+  }
+  return res;
 };
 
 run({
