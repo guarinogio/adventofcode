@@ -1,23 +1,7 @@
 import run from "aocrunner";
+import { getNumbersFromString, lines, partition } from "../utils/index.js";
 
 const parseInput = (rawInput: string) => rawInput;
-
-const lines = (text: string): string[] => {  
-  return text.split('\n')
-}
-
-const getNumbersFromString = (text: string): number[] => {  
-  if(text){
-    return text.replace(/\D+/g, ' ').trim().split(' ').map(e => parseInt(e));
-  }
-  return [];
-}
-
-const partition = <T>(ary: T[], callback: (e: T) => {}) =>
-  ary.reduce((acc:[T[],T[]], e) => {
-    acc[callback(e) ? 0 : 1].push(e)
-    return acc
-  }, [[], []])
 
 const process = (game: string[][], rule: string) => {
   const [move, from, to] = getNumbersFromString(rule);

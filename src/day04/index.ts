@@ -1,13 +1,7 @@
 import run from "aocrunner";
+import { getNumbersFromString } from "../utils/index.js";
 
 const parseInput = (rawInput: string) => rawInput;
-
-const getNumbersFromString = (text: string): number[] => {  
-  if(text){
-    return text.replace(/\D+/g, ' ').trim().split(' ').map(e => parseInt(e));
-  }
-  return [];
-}
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);

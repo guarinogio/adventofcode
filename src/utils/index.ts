@@ -29,3 +29,15 @@
  *     import { myUtil } from '../utils'
  *
  */
+
+export const hasDuplicates = <T>(arr: T[]): boolean => arr.length !== new Set(arr).size;
+
+export const lines = (text: string): string[] => text.split('\n')
+  
+export const getNumbersFromString = (text: string): number[] => text ? text.replace(/\D+/g, ' ').trim().split(' ').map(e => parseInt(e)) : [];
+  
+export const partition = <T>(ary: T[], callback: (e: T) => {}) =>
+ary.reduce((acc:[T[],T[]], e) => {
+    acc[callback(e) ? 0 : 1].push(e)
+    return acc
+}, [[], []])
